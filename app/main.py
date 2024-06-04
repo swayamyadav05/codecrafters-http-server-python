@@ -40,6 +40,10 @@ def main():
                 if "echo" in path[1]:
                     string = path[1].strip("/echo/")
                     response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(string.encode())}\r\n\r\n{string}".encode()
+
+                if "user-agent" in path[1]:
+                    user_agent = request_data[2].split(": ")[1]
+                    response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(user_agent.encode())}\r\n\r\n{user_agent}".encode()
                 print(f"First par {path}")
 
             # Sending the HTTP response to the client
