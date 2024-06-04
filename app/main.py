@@ -1,4 +1,6 @@
 import socket
+import threading
+from typing import Dict
 
 
 def main():
@@ -49,6 +51,9 @@ def main():
             # Sending the HTTP response to the client
             print(f"Received: {data}")
             client_socket.sendall(response)
+
+            t = threading.Thread(target=lambda: response)
+            t.start()
 
 
 if __name__ == "__main__":
