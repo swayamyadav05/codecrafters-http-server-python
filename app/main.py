@@ -35,7 +35,7 @@ def main():
             if len(request_data) > 1:
                 _, path, _ = request_data[0].split(" ")
 
-                if path[1] != "/":
+                if path != "/":
                     response = b"HTTP/1.1 404 Not Found\r\n\r\n"
 
                 elif path.startswith("/echo/"):
