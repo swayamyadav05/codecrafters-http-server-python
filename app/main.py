@@ -31,28 +31,26 @@ def main():
             # Decode the received data and split it by HTTP line delimiter
             request_data = data.split("\r\n")
 
-            # Checking the request path, if it's not "/", set response to 404 Not Found
-            if len(request_data) > 1:
-                _, path, _ = request_data[0].split(" ")
+            _, path, _ = request_data[0].split()
 
-                if path != "/":
-                    response = b"HTTP/1.1 404 Not Found\r\n\r\n"
+            if path != "/":
+                response = b"HTTP/1.1 404 Not Found\r\n\r\n"
 
-                elif path.startswith("/echo/"):
-                    response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(path[6:])}\r\n\r\n{path[6:]}"
-                elif path.startswith("/user-agent"):
-                    user_agent = "User-Agent header not found"
-                    for line in request_data:
-                        if line.startswith("User-Agent:"):
-                            user_agent = line.split(": ", 1)[1]
-                            break
-                    response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(user_agent)}\r\n\r\n{user_agent}"
-                else:
-                    response = b"HTTP/1.1 200 OK\r\n\r\n"  # Default response
+            elif path.startswith("/echo/"):
+                response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(path[6:])}\r\n\r\n{path[6:]}"
+            elif path.startswith("/user-agent"):
+                user_agent = "User-Agent header not found"
+                for line in request_data:
+                    if line.startswith("User-Agent:"):
+                        user_agent = line.split(": ", 1)[1]
+                        break
+                response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(user_agent)}\r\n\r\n{user_agent}"
+            else:
+                response = b"HTTP/1.1 200 OK\r\n\r\n"  # Default response
 
-                # Sending the HTTP response to the client
-                print(f"Received: {data}")
-                client_socket.sendall(response.encode())
+            # Sending the HTTP response to the client
+            print(f"Received: {data}")
+            client_socket.sendall(response.encode())
 
 
 if __name__ == "__main__":
