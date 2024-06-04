@@ -33,7 +33,7 @@ def main():
 
             # Checking the request path, if it's not "/", set response to 404 Not Found
             if len(request_data) > 1:
-                _, path, _ = request_data[0].split(" ")
+                _, path, _ = request_data[0].split()
 
                 if path != "/":
                     response = b"HTTP/1.1 404 Not Found\r\n\r\n"
@@ -42,7 +42,7 @@ def main():
                     response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(path[6:])}\r\n\r\n{path[6:]}"
                 elif path.startswith("/user-agent"):
                     user_agent = "User-Agent header not found"
-                    for line in request_data:
+                    for line in lines:
                         if line.startswith("User-Agent:"):
                             user_agent = line.split(": ", 1)[1]
                             break
