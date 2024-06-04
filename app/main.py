@@ -33,9 +33,8 @@ def main():
 
             _, path, _ = request_data[0].split()
 
-            if path != "/":
-                response = b"HTTP/1.1 404 Not Found\r\n\r\n"
-
+            if path == "/":
+                response = "HTTP/1.1 200 OK\r\n\r\n"
             elif path.startswith("/echo/"):
                 response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(path[6:])}\r\n\r\n{path[6:]}"
             elif path.startswith("/user-agent"):
@@ -46,10 +45,7 @@ def main():
                         break
                 response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(user_agent)}\r\n\r\n{user_agent}"
             else:
-                response = b"HTTP/1.1 200 OK\r\n\r\n"  # Default response
-
-            # Sending the HTTP response to the client
-            print(f"Received: {data}")
+                response = "HTTP/1.1 404 Not Found\r\n\r\n"
             client_socket.sendall(response.encode())
 
 
