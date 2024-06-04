@@ -52,8 +52,9 @@ def main():
             print(f"Received: {data}")
             client_socket.sendall(response)
 
-            t = threading.Thread(target=lambda: response)
-            t.start()
+            threading.Thread(
+                target=response, args=(client_socket, client_address)
+            ).start()
 
 
 if __name__ == "__main__":
