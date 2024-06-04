@@ -39,7 +39,6 @@ def main():
 
                 if "echo" in path[1]:
                     string = path[1].strip("/echo/")
-                    print(string)
                     response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(string.encode())}\r\n\r\n{string}".encode()
                 print(f"First par {path}")
 
