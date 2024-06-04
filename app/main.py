@@ -31,11 +31,20 @@ def main():
             response = b"HTTP/1.1 200 OK\r\n\r\n"  # Default response
 
             # Checking the request path, if it's not "/", set response to 404 Not Found
-            if request_data[0].split(" ")[1] != "/":
-                response = b"HTTP/1.1 404 Not Found\r\n\r\n"
+            if len(request_data) > 1:
+                path = request_data[0].split(" ")
 
+                if path[1] != "/":
+                    response = b"HTTP/1.1 404 Not Found\r\n\r\n"
+
+                if "echo" in path[1]:
+                    string = path[1].strip("/echo/")
+                    response = f"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(string)}\r\n\r\n{string}".encode
+            print(f"First par {path}")
             # Sending the HTTP response to the client
-            client_socket.sendall(response)
+
+        print(f"Received: {data}")
+        client_socket.sendall(response)
 
 
 if __name__ == "__main__":
